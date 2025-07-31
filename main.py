@@ -358,7 +358,7 @@ def render_form_html(values, locked, message):
         .company-name {{
             font-size: 18px;
             font-weight: bold;
-            color: #1a472a;
+            color: #003366;
             margin: 0;
         }}
         .form-title {{
@@ -431,7 +431,7 @@ def render_form_html(values, locked, message):
             <img src="/attached_assets/saman_logo_1753971421258.png" class="logo" alt="بیمه سامان">
             <div class="company-info">
                 <h3 class="company-name">بیمه سامان</h3>
-                <p class="form-title">فرم بیمه عمر و تشکیل سرمایه</p>
+                <p class="form-title">فرم بیمه عمر و تشکیل سرمایه(پرداخت غیریکجا)</p>
             </div>
         </div>
         <button class="print-button" onclick="printForm()">🖨️ چاپ فرم</button>
