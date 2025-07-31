@@ -507,19 +507,38 @@ def samanyar():
         action = request.form.get("action")
         values = {field: request.form.get(field, "") for field in samanyar_mapping.keys()}
 
+        from openpyxl.styles import numbers
+
         if action == "ذخیره فرم":
             try:
                 filename = generate_filename()
                 wb = load_workbook("attached_assets/__جدول_ (2)_1753981424283.xlsx")
                 sheet = wb["Info"]
+
+                from openpyxl.styles import numbers
+
                 for field, cell in samanyar_mapping.items():
-                    sheet[cell] = values[field]
+                    if field == "میانگین نرخ سود قطعی":
+                        sheet[cell] = '=VLOOKUP($C$26,Rates!$D$2:$E$7,2,FALSE)'  # فرمول اکسل
+                    else:
+                        value = values[field]
+                        try:
+                            # تبدیل به عدد اگر ممکن بود
+                            numeric_value = float(value) if value.replace('.', '', 1).isdigit() else value
+                            sheet[cell] = numeric_value
+                            if isinstance(numeric_value, float):
+                                sheet[cell].number_format = numbers.FORMAT_NUMBER
+                        except:
+                            sheet[cell] = value  # اگر تبدیل نشد، همون مقدار رشته‌ای
+
+
                 wb.save(filename)
                 session["samanyar_locked"] = True
                 session["samanyar_filename"] = filename
                 message = "✅ فرم سامانیار ذخیره شد. حالا می‌تونی فایل رو دانلود کنی."
             except Exception as e:
                 message = f"❌ خطا در ذخیره‌سازی: {e}"
+
 
 
 
@@ -542,6 +561,8 @@ def render_samanyar_form(values, locked, message):
     # Generate form fields HTML
     fields_html = ""
     for field in samanyar_mapping.keys():
+        if field == "میانگین نرخ سود قطعی":
+            continue  # حذف این فیلد از فرم
         disabled_attr = "disabled" if locked else ""
         
         if field in samanyar_dropdown_fields:
@@ -745,6 +766,11 @@ def render_samanyar_form(values, locked, message):
     </html>
     """
     return form_html
+
+
+
+
+
 
 
 
