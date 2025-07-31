@@ -533,6 +533,12 @@ def render_samanyar_form(values, locked, message):
         <style>
             body { font-family: Vazir, sans-serif; direction: rtl; background: #f9f9f9; padding: 20px; }
             .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px #ccc; }
+            .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background-color: #ffffff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .header-content { display: flex; align-items: center; gap: 15px; }
+            .logo { height: 60px; width: auto; }
+            .company-info { text-align: right; }
+            .company-name { font-size: 18px; font-weight: bold; color: #1a472a; margin: 0; }
+            .form-title { font-size: 14px; color: #666; margin: 5px 0 0 0; }
             h2 { text-align: center; color: #333; }
             .field { margin-bottom: 15px; }
             label { display: block; font-weight: bold; margin-bottom: 5px; }
@@ -548,6 +554,15 @@ def render_samanyar_form(values, locked, message):
     </head>
     <body>
         <div class="container">
+            <div class="top-bar">
+                <div class="header-content">
+                    <img src="/attached_assets/saman_logo_1753971421258.png" class="logo" alt="بیمه سامان">
+                    <div class="company-info">
+                        <h3 class="company-name">بیمه سامان</h3>
+                        <p class="form-title">فرم اطلاعات طرح سامانیار</p>
+                    </div>
+                </div>
+            </div>
             <h2>فرم اطلاعات طرح سامانیار</h2>
             <form method="POST">
                 {% for field in fields %}
