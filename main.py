@@ -484,6 +484,17 @@ samanyar_mapping = {
     "میانگین نرخ سود قطعی": "I38"
 }
 
+samanyar_dropdown_fields = {
+    "ضریب درآمد ازکارافتادگی": ["1", "2", "3"],
+    "منظور کردن پوشش ها در حق بیمه اولیه": ["بله", "خیر"],
+    "دارای درآمد از کارافتادگی": ["بله", "خیر"],
+    "طرح امراض": ["معمولی", "پایه", "آسایش", "ممتاز"],
+    "طبقه شغلی بیمه‌گذار": ["طبقه چهار", "طبقه دو از کارافتادگی", "طبقه دو کلی", "طبقه سه از کارافتادگی", "طبقه سه کلی", "طبقه یک", "طبقه پنج"],
+    "مدت بیمه نامه": ["5", "10", "15", "20"],
+    "دارای پوشش معافیت": ["بله", "خیر"],
+    "طبقه شغلی بیمه‌شده": ["طبقه چهار", "طبقه دو از کارافتادگی", "طبقه دو کلی", "طبقه سه از کارافتادگی", "طبقه سه کلی", "طبقه یک", "طبقه پنج"]
+}
+
 def generate_filename():
     return f"samanyar_output_{uuid.uuid4().hex}.xlsx"
 
@@ -528,28 +539,51 @@ def download_samanyar():
     return "❌ فایل خروجی پیدا نشد."
 
 def render_samanyar_form(values, locked, message):
-    form_html = """
+    # Generate form fields HTML
+    fields_html = ""
+    for field in samanyar_mapping.keys():
+        disabled_attr = "disabled" if locked else ""
+        
+        if field in samanyar_dropdown_fields:
+            # Create dropdown
+            options = "".join([
+                f'<option value="{opt}" {"selected" if values[field]==opt else ""}>{opt}</option>'
+                for opt in samanyar_dropdown_fields[field]
+            ])
+            input_html = f'<select name="{field}" {disabled_attr} onclick="showMessage(this)">{options}</select>'
+        else:
+            # Create text input
+            input_html = f'<input type="text" name="{field}" value="{values[field]}" {"readonly" if locked else ""}>'
+        
+        fields_html += f"""
+        <div class="field">
+            <label>{field}</label>
+            {input_html}
+        </div>
+        """
+    
+    form_html = f"""
     <!DOCTYPE html>
     <html lang="fa">
     <head>
         <meta charset="UTF-8">
         <title>فرم سامانیار</title>
         <style>
-            body {
+            body {{
                 font-family: Vazir, sans-serif;
                 direction: rtl;
-                background: #6CABDD; /* آبی منچسترسیتی */
+                background: #6CABDD;
                 padding: 20px;
-            }
-            .container {
+            }}
+            .container {{
                 max-width: 800px;
                 margin: auto;
                 background: white;
                 padding: 20px;
                 border-radius: 12px;
                 box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            }
-            .top-bar {
+            }}
+            .top-bar {{
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -558,88 +592,91 @@ def render_samanyar_form(values, locked, message):
                 padding: 15px;
                 border-radius: 10px;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-            .header-content {
+            }}
+            .header-content {{
                 display: flex;
                 align-items: center;
                 gap: 15px;
-            }
-            .logo {
+            }}
+            .logo {{
                 height: 60px;
                 width: auto;
-            }
-            .company-info {
+            }}
+            .company-info {{
                 text-align: right;
-            }
-            .company-name {
+            }}
+            .company-name {{
                 font-size: 18px;
                 font-weight: bold;
                 color: #003366;
                 margin: 0;
-            }
-            .form-title {
+            }}
+            .form-title {{
                 font-size: 14px;
                 color: #666;
                 margin: 5px 0 0 0;
-            }
-            h2 {
+            }}
+            h2 {{
                 text-align: center;
                 color: #003366;
                 margin-bottom: 25px;
-            }
-            .field {
+            }}
+            .field {{
                 margin-bottom: 15px;
-            }
-            label {
+            }}
+            label {{
                 display: block;
                 font-weight: bold;
                 margin-bottom: 5px;
                 color: #003366;
-            }
-            input[type="text"] {
+            }}
+            input[type="text"], select {{
                 width: 100%;
                 padding: 8px;
                 border: 1px solid #ccc;
                 border-radius: 6px;
                 background-color: #f0f8ff;
-            }
-            .buttons {
+            }}
+            select {{
+                cursor: pointer;
+            }}
+            .buttons {{
                 display: flex;
                 justify-content: space-between;
                 margin-top: 30px;
-            }
-            .buttons button {
+            }}
+            .buttons button {{
                 padding: 10px 20px;
                 font-size: 16px;
                 border: none;
                 border-radius: 6px;
                 cursor: pointer;
                 font-weight: bold;
-            }
-            .save {
+            }}
+            .save {{
                 background-color: #cde6ff;
                 color: #003366;
-            }
-            .edit {
+            }}
+            .edit {{
                 background-color: #cde6ff;
                 color: #003366;
-            }
-            .save:disabled, .edit:disabled {
+            }}
+            .save:disabled, .edit:disabled {{
                 background-color: #e0e0e0;
                 color: #888;
                 cursor: not-allowed;
-            }
-            .message {
+            }}
+            .message {{
                 margin-top: 20px;
                 font-weight: bold;
                 color: #003366;
                 text-align: center;
-            }
-            .download {
+            }}
+            .download {{
                 margin-top: 20px;
                 text-align: center;
-            }
-            .download a {
+            }}
+            .download a {{
                 background-color: #cde6ff;
                 color: #003366;
                 padding: 10px 20px;
@@ -647,8 +684,36 @@ def render_samanyar_form(values, locked, message):
                 text-decoration: none;
                 font-weight: bold;
                 display: inline-block;
-            }
+            }}
+            .alert-message {{
+                background-color: #fff3cd;
+                border: 1px solid #ffeaa7;
+                color: #856404;
+                padding: 10px;
+                border-radius: 5px;
+                margin-top: 10px;
+                font-size: 14px;
+                display: none;
+            }}
         </style>
+        <script>
+            function showMessage(element) {{
+                // Remove any existing alert messages
+                var existingAlerts = document.querySelectorAll('.alert-message');
+                existingAlerts.forEach(function(alert) {{
+                    alert.remove();
+                }});
+                
+                // Show message for "طرح امراض" field
+                if (element.name === 'طرح امراض') {{
+                    var alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert-message';
+                    alertDiv.style.display = 'block';
+                    alertDiv.innerHTML = 'سن بیمه شده برای طرح های امراض خاص، پایه، آسایش و ممتاز باید حداقل 2 سال باشد';
+                    element.parentNode.appendChild(alertDiv);
+                }}
+            }}
+        </script>
     </head>
     <body>
         <div class="container">
@@ -663,28 +728,23 @@ def render_samanyar_form(values, locked, message):
             </div>
             <h2>فرم اطلاعات طرح سامانیار</h2>
             <form method="POST">
-                {% for field in fields %}
-                    <div class="field">
-                        <label>{{ field }}</label>
-                        <input type="text" name="{{ field }}" value="{{ values[field] }}" {% if locked %}readonly{% endif %}>
-                    </div>
-                {% endfor %}
+                {fields_html}
                 <div class="buttons">
-                    <button type="submit" name="action" value="ذخیره فرم" class="save" {% if locked %}disabled{% endif %}>ذخیره فرم</button>
-                    <button type="submit" name="action" value="ویرایش فرم" class="edit" {% if not locked %}disabled{% endif %}>ویرایش فرم</button>
+                    <button type="submit" name="action" value="ذخیره فرم" class="save" {"disabled" if locked else ""}>ذخیره فرم</button>
+                    <button type="submit" name="action" value="ویرایش فرم" class="edit" {"disabled" if not locked else ""}>ویرایش فرم</button>
                 </div>
             </form>
-            <div class="message">{{ message }}</div>
-            {% if locked %}
-                <div class="download">
-                    <a href="/download_samanyar">⬇️ دانلود فایل خروجی</a>
-                </div>
-            {% endif %}
+            <div class="message">{message}</div>
+            {"" if not locked else '''
+            <div class="download">
+                <a href="/download_samanyar">⬇️ دانلود فایل خروجی</a>
+            </div>
+            '''}
         </div>
     </body>
     </html>
     """
-    return render_template_string(form_html, fields=samanyar_mapping.keys(), values=values, locked=locked, message=message)
+    return form_html
 
 
 
