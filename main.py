@@ -510,7 +510,7 @@ def samanyar():
         if action == "ذخیره فرم":
             try:
                 filename = generate_filename()
-                wb = load_workbook("attached_assets/__جدول__1753971258468.xlsx")
+                wb = load_workbook("attached_assets/__جدول_ (2)_1753981424283.xlsx")
                 sheet = wb["Info"]
                 for field, cell in samanyar_mapping.items():
                     sheet[cell] = values[field]
