@@ -531,25 +531,119 @@ def render_samanyar_form(values, locked, message):
         <meta charset="UTF-8">
         <title>فرم سامانیار</title>
         <style>
-            body { font-family: Vazir, sans-serif; direction: rtl; background: #f9f9f9; padding: 20px; }
-            .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px #ccc; }
-            .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background-color: #ffffff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-            .header-content { display: flex; align-items: center; gap: 15px; }
-            .logo { height: 60px; width: auto; }
-            .company-info { text-align: right; }
-            .company-name { font-size: 18px; font-weight: bold; color: #1a472a; margin: 0; }
-            .form-title { font-size: 14px; color: #666; margin: 5px 0 0 0; }
-            h2 { text-align: center; color: #333; }
-            .field { margin-bottom: 15px; }
-            label { display: block; font-weight: bold; margin-bottom: 5px; }
-            input[type="text"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-            .buttons { display: flex; justify-content: space-between; margin-top: 20px; }
-            .buttons button { padding: 10px 20px; font-size: 16px; border: none; border-radius: 4px; cursor: pointer; }
-            .save { background-color: #4CAF50; color: white; }
-            .edit { background-color: #f39c12; color: white; }
-            .message { margin-top: 20px; font-weight: bold; color: #2c3e50; }
-            .download { margin-top: 10px; text-align: center; }
-            .download a { color: #2980b9; text-decoration: none; font-weight: bold; }
+            body {
+                font-family: Vazir, sans-serif;
+                direction: rtl;
+                background: #6CABDD; /* آبی منچسترسیتی */
+                padding: 20px;
+            }
+            .container {
+                max-width: 800px;
+                margin: auto;
+                background: white;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            }
+            .top-bar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff;
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            .header-content {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+            .logo {
+                height: 60px;
+                width: auto;
+            }
+            .company-info {
+                text-align: right;
+            }
+            .company-name {
+                font-size: 18px;
+                font-weight: bold;
+                color: #003366;
+                margin: 0;
+            }
+            .form-title {
+                font-size: 14px;
+                color: #666;
+                margin: 5px 0 0 0;
+            }
+            h2 {
+                text-align: center;
+                color: #003366;
+                margin-bottom: 25px;
+            }
+            .field {
+                margin-bottom: 15px;
+            }
+            label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #003366;
+            }
+            input[type="text"] {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                background-color: #f0f8ff;
+            }
+            .buttons {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 30px;
+            }
+            .buttons button {
+                padding: 10px 20px;
+                font-size: 16px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+            }
+            .save {
+                background-color: #cde6ff;
+                color: #003366;
+            }
+            .edit {
+                background-color: #cde6ff;
+                color: #003366;
+            }
+            .save:disabled, .edit:disabled {
+                background-color: #e0e0e0;
+                color: #888;
+                cursor: not-allowed;
+            }
+            .message {
+                margin-top: 20px;
+                font-weight: bold;
+                color: #003366;
+                text-align: center;
+            }
+            .download {
+                margin-top: 20px;
+                text-align: center;
+            }
+            .download a {
+                background-color: #cde6ff;
+                color: #003366;
+                padding: 10px 20px;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: bold;
+                display: inline-block;
+            }
         </style>
     </head>
     <body>
