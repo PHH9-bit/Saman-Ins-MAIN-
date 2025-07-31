@@ -166,7 +166,7 @@ mapping = {
 
 def generate_filename():
     now = datetime.datetime.now()
-    return f"جدول_خروجی_{now.strftime('%Y-%m-%d_%H-%M')}.xlsx"
+    return f"خروجی_فرم_پرداخت_یکجا_{now.strftime('%Y-%m-%d_%H-%M')}.xlsx"
 
 def colorize_table(path):
     try:
