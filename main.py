@@ -495,7 +495,7 @@ samanyar_dropdown_fields = {
     "طبقه شغلی بیمه‌شده": ["طبقه چهار", "طبقه دو از کارافتادگی", "طبقه دو کلی", "طبقه سه از کارافتادگی", "طبقه سه کلی", "طبقه یک", "طبقه پنج"]
 }
 
-def generate_filename():
+def generate_samanyar_filename():
     return f"samanyar_output_{uuid.uuid4().hex}.xlsx"
 
 @app.route("/samanyar", methods=["GET", "POST"])
@@ -511,7 +511,7 @@ def samanyar():
 
         if action == "ذخیره فرم":
             try:
-                filename = generate_filename()
+                filename = generate_samanyar_filename()
                 wb = load_workbook("attached_assets/__جدول_ (2)_1753981424283.xlsx")
                 sheet = wb["Info"]
 
@@ -564,7 +564,7 @@ def render_samanyar_form(values, locked, message):
         if field == "میانگین نرخ سود قطعی":
             continue  # حذف این فیلد از فرم
         disabled_attr = "disabled" if locked else ""
-        
+
         if field in samanyar_dropdown_fields:
             # Create dropdown
             options = "".join([
@@ -575,14 +575,14 @@ def render_samanyar_form(values, locked, message):
         else:
             # Create text input
             input_html = f'<input type="text" name="{field}" value="{values[field]}" {"readonly" if locked else ""}>'
-        
+
         fields_html += f"""
         <div class="field">
             <label>{field}</label>
             {input_html}
         </div>
         """
-    
+
     form_html = f"""
     <!DOCTYPE html>
     <html lang="fa">
@@ -724,7 +724,7 @@ def render_samanyar_form(values, locked, message):
                 existingAlerts.forEach(function(alert) {{
                     alert.remove();
                 }});
-                
+
                 // Show message for "طرح امراض" field
                 if (element.name === 'طرح امراض') {{
                     var alertDiv = document.createElement('div');
@@ -778,5 +778,3 @@ def render_samanyar_form(values, locked, message):
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
