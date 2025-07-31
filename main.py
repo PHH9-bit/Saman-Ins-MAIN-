@@ -7,6 +7,10 @@ import os
 
 app = Flask(__name__)
 
+@app.route('/attached_assets/<filename>')
+def serve_static(filename):
+    return send_file(f'attached_assets/{filename}')
+
 TEMPLATE_PATH = "attached_assets/جدول_افلاین_عمر_و_تشکیل_سرمایه_رشد_1 (1)_1753971361572.xlsx"
 
 
