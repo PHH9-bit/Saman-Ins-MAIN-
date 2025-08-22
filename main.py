@@ -116,6 +116,8 @@ def login():
 
 
 
+
+
 dropdown_fields = {
     "روش پرداخت حق بیمه": ["ماهانه", "دوماهه", "سه ماهه", "چهارماهه", "شش ماهه", "سالانه"],
     "طرح": ["پرریسک", "رشد1", "رشد", "کم_ریسک", "متوسط_ریسک"],
@@ -421,7 +423,7 @@ def render_form_html(values, locked, message):
         }}
         function openWelcome() {{
             const win = window.open("", "WelcomeWindow", "width=400,height=200");
-            win.document.write("<h2 style='font-family:tahoma; text-align:center;'>خوش آمدید به برنامه کاربردی من</h2>");
+            win.document.write("<h2 style='font-family:tahoma; text-align:center;'>MADE BY POUYAN HEIDARI HERIS</h2>");
         }}
     </script>
 </head>
